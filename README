@@ -16,10 +16,9 @@ bit version because it would be much slower than the 64 bit
 version. The executable was tested on a Fedora 10 distribution but
 should work on most recent distributions.
 
-A Windows 64 bit version is available too, but as I only tested it
-thru the Wine emulator, don't expect it to be to run as smoothly as
-the Linux version. In particular, no specific care has been taken to
-make the disk I/Os efficient.
+A Windows 64 bit version is available too. Currently it does not
+support asynchronous and raw I/Os, so its performance is lower than
+the Linux version for disk based computations.
 
 The CPU must support the SSE3 instruction set, which is the case for
 all recent CPUs as the year of 2010.
@@ -37,7 +36,7 @@ Type:
 
  ./tpi -o pi.txt 10M
 
-to compute about 10^7 digits of Pi. A single core is used. 
+to compute 10^7 digits of Pi. A single core is used. 
 
 If your CPU has 4 physical cores, type:
 
@@ -82,7 +81,15 @@ usage: tpi [options] [n_digits|command] [params]
 Options are:
 ------------
 
--m n       
+-T n       
+
+Set number of threads to 'n' (default=1)
+
+-o file    
+
+Set output file (default = none)
+
+-m n
 
 Set max memory size to 'n' bytes. 
 
@@ -93,14 +100,6 @@ Set disk path (default = no disk use)
 -d n       
 
 Set max disk size to 'n' bytes. By default all the disk is used.
-
--T n       
-
-Set number of threads to 'n' (default=1)
-
--o file    
-
-Set output file (default = none)
 
 -f format  
 
@@ -113,7 +112,7 @@ displayed using the tpidump utility. Take care to specify a display
 base similar as the one used for the computation. Source code is
 included to document the file format.
 
-A limitation of this version is that the binary format can only used
+A limitation of this version is that the binary format can only be used
 if a disk path is specified with the -p option. The binary file must
 be in the directory specified with -p.
 
@@ -138,7 +137,7 @@ Display memory usage and statistics
 
 -D         
 
-Use raw disk I/Os (Linux only). Raw disk I/Os can be faster or huge
+Use raw disk I/Os (Linux only). Raw disk I/Os can be faster for huge
 computations, but you need a suitable OS and filesystem to support it
 (Linux 2.6.x and ext4 are good choices).
 
